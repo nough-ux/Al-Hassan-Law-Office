@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>مكتب الحسَن — خبرةوثقة</title>
+    <title>مكتب الحسَن — خبرة و ثقة</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23caa33b'/%3E%3Cstop offset='100%25' stop-color='%23f7d77a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='41' text-anchor='middle' font-family='Cairo,Arial,sans-serif' font-size='24' font-weight='700' fill='%23081018'%3EAH%3C/text%3E%3C/svg%3E">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root{
@@ -11,31 +12,100 @@
             --card:#0f1724;
             --muted:#9aa6b2;
             --gold:#caa33b;
+            --gold-soft:#f4d98d;
             --glass: rgba(255,255,255,0.03);
             --radius:14px;
         }
         *{box-sizing:border-box;font-family:'Cairo',sans-serif}
-        html,body{height:100%;background:linear-gradient(180deg,var(--bg),#071019);color:#e6eef3;margin:0}
+        html,body{height:100%;background:#0b1320;color:#e6eef3;margin:0}
         a{color:inherit;text-decoration:none}
-        header{position:sticky;top:0;z-index:40;background:linear-gradient(180deg,rgba(7,10,14,0.6),transparent);backdrop-filter:blur(6px);padding:14px 20px;border-bottom:1px solid rgba(255,255,255,0.03)}
-        .nav{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:18px;justify-content:space-between}
+        header{position:sticky;top:0;z-index:40;background:linear-gradient(180deg,rgba(7,10,14,0.88),rgba(7,10,14,0.45));backdrop-filter:blur(14px);padding:14px 20px;border-bottom:none}
+        .nav{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:18px;justify-content:space-between;position:relative}
         .brand{display:flex;align-items:center;gap:12px;font-weight:700}
         .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--gold),#f7d77a);display:flex;align-items:center;justify-content:center;color:#081018;font-weight:700}
+        .nav-actions{display:flex;align-items:center;gap:10px}
         nav ul{display:flex;gap:12px;list-style:none;margin:0;padding:0}
         nav a{padding:8px 12px;border-radius:8px;color:var(--muted);font-weight:600}
         nav a:hover{background:var(--glass);color:#fff}
-        .cta{background:linear-gradient(90deg,var(--gold),#ffd976);color:#071018;padding:10px 16px;border-radius:10px;font-weight:700}
+        .cta{background:linear-gradient(90deg,var(--gold),#ffd976);color:#071018;padding:10px 16px;border-radius:10px;font-weight:700;box-shadow:0 10px 24px rgba(202,163,59,0.25)}
+        .menu-toggle{
+            display:none;
+            width:44px;
+            height:44px;
+            border:none;
+            border-radius:12px;
+            background:rgba(255,255,255,0.06);
+            color:#fff;
+            cursor:pointer;
+            align-items:center;
+            justify-content:center;
+            flex-direction:column;
+            gap:4px;
+            box-shadow:0 10px 20px rgba(0,0,0,0.18);
+        }
+        .menu-toggle span{
+            display:block;
+            width:4px;
+            height:4px;
+            border-radius:50%;
+            background:currentColor;
+        }
+        .mobile-menu{
+            display:none;
+            position:absolute;
+            top:calc(100% + 10px);
+            left:0;
+            min-width:220px;
+            max-width:min(320px, calc(100vw - 28px));
+            padding:10px;
+            border-radius:18px;
+            background:linear-gradient(180deg,rgba(14,22,34,0.98),rgba(10,16,26,0.98));
+            box-shadow:0 18px 38px rgba(0,0,0,0.28);
+            z-index:60;
+        }
+        .mobile-menu a{
+            display:block;
+            padding:12px 14px;
+            border-radius:12px;
+            color:#e6eef3;
+            font-weight:700;
+        }
+        .mobile-menu a:hover{
+            background:rgba(255,255,255,0.06);
+        }
+        .mobile-nav{
+            position:relative;
+            display:none;
+        }
+        .mobile-nav.is-open .mobile-menu{
+            display:block;
+        }
         .container{max-width:1200px;margin:0 auto;padding:28px 20px}
         /* Hero */
-        /* Fixed min-height prevents image size changes from shifting the rest of the page. */
-        .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:stretch;min-height:420px;padding:36px;background:linear-gradient(180deg,transparent,rgba(255,255,255,0.01));border-radius:18px}
-        .hero-left h1{font-size:32px;margin:0 0 10px}
-        .hero-left p{color:var(--muted);margin:0 0 18px}
+        .hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:32px;align-items:center;padding:0;background:transparent;border:none;border-radius:0;box-shadow:none}
+        .hero-left{
+            background:rgba(255,255,255,0.02);
+            padding:28px;
+            border-radius:26px;
+            border:none;
+            box-shadow:0 18px 50px rgba(0,0,0,0.18);
+            position:relative;
+            overflow:hidden;
+        }
+        .hero-left::before{
+            content:"";
+            position:absolute;
+            inset:0;
+            background:none;
+            pointer-events:none;
+        }
+        .hero-left h1{font-size:42px;line-height:1.25;margin:0 0 14px}
+        .hero-left p{color:var(--muted);margin:0 0 18px;font-size:17px;line-height:1.9}
         .stats{display:flex;gap:20px;flex-wrap:wrap}
-        .stat{background:var(--card);padding:14px;border-radius:12px;min-width:140px;text-align:center}
+        .stat{background:linear-gradient(180deg,rgba(19,30,46,0.98),rgba(11,18,29,0.98));padding:16px 14px;border-radius:16px;min-width:140px;text-align:center;border:none;box-shadow:0 12px 24px rgba(0,0,0,0.24)}
         .stat strong{display:block;font-size:18px;color:var(--gold)
         }
-        .hero-right{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);display:flex;flex-direction:column}
+        .hero-right{background:#111a27;padding:0;border-radius:0;border:none;display:flex;flex-direction:column;min-height:100%}
         .booking{display:flex;flex-direction:column;gap:10px}
         label{font-size:13px;color:var(--muted)}
         input,textarea,select{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:10px;border-radius:8px;color:#fff;width:100%;outline:none}
@@ -46,36 +116,222 @@
         h2{margin:0 0 12px;font-size:22px}
         .lead{color:var(--muted);margin-bottom:18px}
         .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-        .card{background:var(--card);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
+        .card{background:linear-gradient(180deg,rgba(15,23,36,0.96),rgba(10,17,28,0.96));padding:20px;border-radius:18px;border:none}
         .card h3{margin:0 0 8px;color:var(--gold)}
         .testimonial{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:16px;border-radius:12px}
-        .faq-item{background:var(--card);padding:12px;border-radius:10px;margin-bottom:10px;cursor:pointer}
+        .faq-item{
+            background:linear-gradient(180deg,rgba(20,30,44,0.98),rgba(13,21,33,0.98));
+            padding:18px 20px;
+            border-radius:18px;
+            margin-bottom:14px;
+            cursor:pointer;
+            width:100%;
+            box-shadow:0 14px 30px rgba(0,0,0,0.16);
+        }
+        .faq-item strong{
+            display:block;
+            font-size:18px;
+            line-height:1.8;
+        }
+        .faq-item .answer{
+            line-height:1.9;
+        }
         .blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
         /* Footer */
-        footer{padding:28px 20px;border-top:1px solid rgba(255,255,255,0.02);margin-top:40px}
+        footer{padding:28px 20px;border-top:none;margin-top:40px}
+        .photo-shell{
+            position:relative;
+            border-radius:22px;
+            padding:18px 18px 0;
+            overflow:hidden;
+            background:linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.015));
+            border:1px solid rgba(255,255,255,0.14);
+            box-shadow:
+                0 0 0 1px rgba(255,255,255,0.04) inset,
+                0 18px 40px rgba(0,0,0,0.22),
+                0 0 28px rgba(255,255,255,0.06);
+            min-height:420px;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:flex-start
+        }
+        .photo-shell::after{content:"";position:absolute;inset:auto 10% 12px;height:28px;background:radial-gradient(circle, rgba(0,0,0,0.4), transparent 70%);filter:blur(14px);pointer-events:none}
+        .carousel-copy{
+            padding:16px 14px 18px;
+            width:100%;
+            margin-top:10px;
+            border-radius:18px;
+            background:linear-gradient(180deg, rgba(10,17,28,0.92), rgba(15,23,36,0.9));
+            border:1px solid rgba(255,255,255,0.12);
+            box-shadow:
+                0 0 0 1px rgba(255,255,255,0.04) inset,
+                0 12px 26px rgba(0,0,0,0.22),
+                0 0 18px rgba(255,255,255,0.05);
+        }
         /* Responsive */
         @media(max-width:980px){
-            .hero{grid-template-columns:1fr;gap:20px}
+            .hero{grid-template-columns:1fr;gap:24px;padding:0}
             .cards,.blog-grid{grid-template-columns:repeat(2,1fr)}
             nav ul{display:none}
-            /* Keep a smaller fixed hero height on narrower screens to avoid shifting */
-            .hero{min-height:320px}
+            .nav{gap:12px}
+            .mobile-nav,.menu-toggle{display:flex}
+            .hero-left{padding:22px}
+            .hero-left h1{font-size:34px}
+            .photo-shell{min-height:360px}
         }
         @media(max-width:600px){
             .cards,.blog-grid{grid-template-columns:1fr}
-            .hero-left h1{font-size:24px}
+            .hero-left h1{font-size:28px}
             .hero-right{order:2}
+            .grid-2{grid-template-columns:1fr}
+            footer > div{flex-direction:column;text-align:center}
+            #lawyer-img{height:350px}
+            .carousel-text{min-height:175px;height:175px;font-size:15px}
+        }
+
+        @media(max-width:480px){
+            header{padding:12px 14px}
+            .container{padding:18px 14px}
+            #home{
+                width:100%;
+                max-width:100%;
+                min-width:0;
+                overflow-x:hidden;
+            }
+            #home > *{
+                width:100%;
+                max-width:100%;
+                min-width:0;
+            }
+            .nav{
+                align-items:stretch;
+                gap:12px;
+                flex-wrap:wrap;
+            }
+            .brand{
+                max-width:none;
+                width:100%;
+                min-height:44px;
+                padding-left:56px;
+                position:relative;
+            }
+            .brand > div:last-child{min-width:0}
+            .brand .mobile-nav{
+                position:absolute;
+                left:0;
+                top:0;
+                z-index:70;
+            }
+            .nav-actions{
+                width:100%;
+                padding-left:0;
+                min-width:0;
+                justify-content:stretch;
+            }
+            .cta{
+                width:100%;
+                text-align:center;
+                padding:14px 16px;
+                font-size:16px;
+                white-space:normal;
+            }
+            .hero{gap:18px;padding:0;border-radius:0}
+            .hero-left{order:1;padding:18px;border-radius:22px}
+            .hero-right{order:2;padding:0;border-radius:0}
+            .hero-left h1{font-size:24px;line-height:1.45}
+            .hero-left .lead{font-size:15px;line-height:1.8}
+            .hero-left > div[style*="margin-top:18px"]{
+                display:flex !important;
+                justify-content:center;
+                width:100%;
+                margin-top:16px !important;
+                overflow:hidden;
+            }
+            .stats{gap:10px}
+            .stat{min-width:calc(50% - 5px);padding:12px 10px}
+            .stat strong{font-size:16px}
+            .cta,button.primary,button.ghost{padding:12px 14px;font-size:15px}
+            .hero-left button.primary{
+                width:auto;
+                min-width:180px;
+                max-width:100%;
+                display:inline-flex;
+                align-items:center;
+                justify-content:center;
+                flex:0 0 auto;
+            }
+            .photo-shell{
+                min-height:280px;
+                padding:14px 10px 0;
+                background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+            }
+            .carousel-copy{
+                padding:14px 4px 10px;
+                margin-top:8px;
+                border-radius:0;
+                background:transparent;
+                border:none;
+                box-shadow:none;
+            }
+            .carousel-text{
+                width:100%;
+                max-width:100%;
+                min-width:0;
+                overflow-x:hidden;
+            }
+            .carousel-text .lead{
+                margin:4px 0 0 !important;
+            }
+            .carousel-text .stats{
+                width:100%;
+                max-width:100%;
+                flex-wrap:wrap !important;
+                justify-content:center;
+                margin-top:6px !important;
+            }
+            .carousel-text .stat{
+                min-width:calc(50% - 5px) !important;
+                max-width:100%;
+            }
+            .carousel-text{min-height:170px;height:170px;font-size:15px}
+            #lawyer-img{height:280px}
+            .faq-item{padding:16px 14px;border-radius:16px}
+            .faq-item strong{font-size:17px;line-height:1.7}
+            section{padding:34px 0}
         }
         /* small helpers */
         .muted{color:var(--muted)}
         .center{display:flex;align-items:center;justify-content:center}
         .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+        .reveal{
+            opacity:0;
+            transform:translateY(34px);
+            transition:opacity .39s ease, transform .39s ease;
+            will-change:opacity, transform;
+        }
+        .reveal.is-visible{
+            opacity:1;
+            transform:translateY(0);
+        }
+        .reveal[data-reveal-delay="1"]{transition-delay:.08s}
+        .reveal[data-reveal-delay="2"]{transition-delay:.16s}
+        .reveal[data-reveal-delay="3"]{transition-delay:.24s}
+        @media (prefers-reduced-motion: reduce){
+            .reveal,.reveal.is-visible{
+                opacity:1;
+                transform:none;
+                transition:none;
+            }
+        }
         /* Carousel transitions and fixed text size */
-        /* Ensure the single carousel image fills its container without causing reflow */
-        #lawyer-img{transition:opacity .35s ease;will-change:opacity;display:block;width:100%;height:100%;object-fit:cover;border-radius:12px;max-width:none}
-        .hero-right .carousel{flex:1;height:100%;overflow:hidden;display:flex;flex-direction:column;justify-content:center;position:relative}
-        .carousel-text{font-size:16px;transition:opacity .35s ease;opacity:1;flex:0 0 auto}
+        #lawyer-img{transition:opacity .35s ease;will-change:opacity;display:block;width:100%;height:390px;max-width:100%;object-fit:contain;object-position:center bottom;border-radius:12px;position:relative;z-index:1}
+        .hero-right .carousel{display:flex;flex-direction:column;justify-content:center;position:relative}
+        .hero-right.small-slide #lawyer-img{height:390px}
+        .carousel-text{font-size:15px;transition:opacity .35s ease;opacity:1;overflow:visible;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:170px;height:170px}
         .carousel-dots button{transition:background .2s ease}
+        /* Targeted smaller size for a specific long stat text */
+        .small-stat{font-size:13px}
     </style>
 </head>
 <body>
@@ -87,6 +343,20 @@
                     <div style="font-size:16px">مكتب الحسَن</div>
                     <div style="font-size:12px;color:var(--muted)">محاماة واستشارات قانونية</div>
                 </div>
+                <div class="mobile-nav" id="mobile-nav">
+                    <button class="menu-toggle" id="menu-toggle" aria-label="فتح القائمة" aria-expanded="false" aria-controls="mobile-menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <div class="mobile-menu" id="mobile-menu">
+                        <a href="#home">الرئيسية</a>
+                        <a href="#about">من نحن</a>
+                        <a href="#services">الخدمات</a>
+                        <a href="#faq">الأسئلة الشائعة</a>
+                        <a href="#contact">تواصل</a>
+                    </div>
+                </div>
             </div>
             <nav>
                 <ul>
@@ -97,7 +367,7 @@
                     <li><a href="#contact">تواصل</a></li>
                 </ul>
             </nav>
-            <div style="display:flex;gap:10px;align-items:center">
+            <div class="nav-actions">
                 <a class="cta" href="#contact">اتصل الآن</a>
             </div>
         </div>
@@ -128,12 +398,14 @@
                 </div>
             </div>
             <aside class="hero-right">
-                <div class="carousel" style="position:relative">
-                    <img id="lawyer-img" src="lawyer.png" alt="أحمد حسن" style="display:block;margin:0 auto;">
-
-                    <div class="carousel-dots" style="display:flex;gap:8px;justify-content:center;margin-top:12px"></div>
-
-                    <div class="carousel-text" style="margin-top:12px;text-align:center"></div>
+                <div class="carousel">
+                    <div class="photo-shell">
+                        <img id="lawyer-img" src="lawyer.png" alt="أحمد حسن" style="display:block;margin:0 auto;">
+                        <div class="carousel-copy">
+                            <div class="carousel-dots" style="display:flex;gap:8px;justify-content:center;margin-top:12px"></div>
+                            <div class="carousel-text" style="margin-top:12px;text-align:center"></div>
+                        </div>
+                    </div>
                 </div>
             </aside>
         </section>
@@ -215,8 +487,7 @@
             <h2>تواصل معنا</h2>
             <p class="lead">للحجز أو الاستفسار املأ النموذج أدناه وسنعاود الاتصال بك خلال ساعات العمل.</p>
             <div style="margin-top:12px">
-                <div class="card" style="position:relative;padding-top:36px">
-                    <button class="primary" style="position:absolute;bottom:12px;left:12px" onclick="openExternalForm()">إرسال الرسالة</button>
+                <div class="card" style="display:flex;flex-direction:column;gap:12px">
                     <h3>معلومات الاتصال</h3>
                     <p class="muted">هاتف: <strong style="color:var(--gold)">+20 1552019770</strong></p>
                     <p class="muted">بريد إلكتروني: <strong style="color:var(--gold)">alhassanlawoffice56@gmail.com</strong></p>
@@ -225,6 +496,7 @@
                         <h4>ساعات العمل</h4>
                         <p class="muted">كل يوم من 12صباحًا — 12 مساءًا معدا يوم الخميس:مغلق</p>
                     </div>
+                    <button class="primary" onclick="openExternalForm()">إرسال الرسالة</button>
                 </div>
             </div>
         </section>
@@ -269,6 +541,70 @@
             });
         });
 
+        // Mobile 3-dots navigation
+        (function(){
+            const mobileNav = document.getElementById('mobile-nav');
+            const menuToggle = document.getElementById('menu-toggle');
+            if(!mobileNav || !menuToggle) return;
+
+            function setMenu(open){
+                mobileNav.classList.toggle('is-open', open);
+                menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+            }
+
+            menuToggle.addEventListener('click', function(e){
+                e.stopPropagation();
+                setMenu(!mobileNav.classList.contains('is-open'));
+            });
+
+            mobileNav.querySelectorAll('a').forEach(link=>{
+                link.addEventListener('click', ()=> setMenu(false));
+            });
+
+            document.addEventListener('click', function(e){
+                if(!mobileNav.contains(e.target)) setMenu(false);
+            });
+
+            window.addEventListener('resize', function(){
+                if(window.innerWidth > 980) setMenu(false);
+            });
+        })();
+
+        // Scroll reveal for sections below the fold.
+        (function(){
+            const targets = [
+                ...document.querySelectorAll('#about h2, #about .lead, #about .card'),
+                ...document.querySelectorAll('#services h2, #services .lead, #services .card'),
+                ...document.querySelectorAll('#faq h2, #faq .lead, #faq .faq-item'),
+                ...document.querySelectorAll('#contact h2, #contact .lead, #contact .card')
+            ];
+
+            targets.forEach((el, index) => {
+                el.classList.add('reveal');
+                el.dataset.revealDelay = String(index % 4);
+            });
+
+            if(window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)){
+                targets.forEach(el => el.classList.add('is-visible'));
+                return;
+            }
+
+            const observer = new IntersectionObserver((entries)=>{
+                entries.forEach(entry=>{
+                    if(entry.isIntersecting){
+                        entry.target.classList.add('is-visible');
+                    } else {
+                        entry.target.classList.remove('is-visible');
+                    }
+                });
+            }, {
+                threshold: 0.14,
+                rootMargin: '0px 0px -8% 0px'
+            });
+
+            targets.forEach(el => observer.observe(el));
+        })();
+
         // Carousel: single <img>, auto-slide, arrows, dots, and text update
         (function(){
             const slides = [
@@ -302,59 +638,72 @@
             let idx = slides.findIndex(s => s.src === img.getAttribute('src'));
             if(idx === -1) idx = 0;
 
-            // Preload images to avoid flicker
-            slides.forEach(s => { const p = new Image(); p.src = s.src; });
+            // Preload images and keep references so swaps don't briefly flash empty.
+            const preloaded = slides.map(s => {
+                const p = new Image();
+                p.src = s.src;
+                return p;
+            });
 
             function renderStats(s){
-                return `<div class="stats" style="justify-content:center;flex-wrap:nowrap;gap:10px;margin-top:12px">`+
-                    s.map(it=>`<div class="stat" style="min-width:110px;padding:10px;border-radius:10px;background:var(--card);border:1px solid rgba(255,255,255,0.02);text-align:center"><strong style="display:block;color:var(--gold)">${it.value}</strong><div class="muted" style="font-size:13px;margin-top:6px">${it.label}</div></div>`).join('')+
-                `</div>`;
+                let html = `<div class="stats" style="justify-content:center;flex-wrap:nowrap;gap:10px;margin-top:12px">`;
+                html += s.map(it => {
+                    const small = (it.value === 'الاستئناف العالي / مجلس الدولة') ? ' class="small-stat"' : '';
+                    return `<div class="stat" style="min-width:140px"><strong${small}>${it.value}</strong><div class="muted" style="font-size:13px;margin-top:6px">${it.label}</div></div>`;
+                }).join('');
+                html += `</div>`;
+                return html;
             }
 
             const FADE_MS = 350;
+            let transitionToken = 0;
 
             function update(){
-                const s = slides[idx];
+                const slideIndex = idx;
+                const s = slides[slideIndex];
+                const heroRight = document.querySelector('.hero-right');
+                const token = ++transitionToken;
 
                 // Update dots immediately to reflect the change
                 Array.from(dotsContainer.children).forEach((d,i)=>{
-                    d.style.background = (i === idx) ? 'var(--gold)' : 'rgba(255,255,255,0.12)';
+                    d.style.background = (i === slideIndex) ? 'var(--gold)' : 'rgba(255,255,255,0.12)';
                 });
 
                 // Ensure transitions are set
                 img.style.transition = `opacity ${FADE_MS}ms ease`;
                 textContainer.style.transition = `opacity ${FADE_MS}ms ease`;
 
-                // Fade out image and text
+                const nextImage = preloaded[slideIndex];
+
+                const finishSwap = () => {
+                    if(token !== transitionToken) return;
+                    if(heroRight){
+                        if(slideIndex === 1) heroRight.classList.add('small-slide');
+                        else heroRight.classList.remove('small-slide');
+                    }
+                    img.src = s.src;
+                    textContainer.innerHTML = `<div style="font-weight:700">${s.title}</div><p class="lead" style="margin:8px 0 0">${s.desc}</p>` + renderStats(s.stats);
+                    requestAnimationFrame(()=>{
+                        if(token !== transitionToken) return;
+                        img.style.opacity = '1';
+                        textContainer.style.opacity = '1';
+                    });
+                };
+
                 img.style.opacity = '0';
                 textContainer.style.opacity = '0';
 
-                // After fade out, change src and text, then fade in when image loaded
-                setTimeout(()=>{
-                    let loaded = false;
-                    img.onload = function(){
-                        loaded = true;
-                        // Update text only when image is ready to avoid mismatch during transition
-                        textContainer.innerHTML = `<div style="font-weight:700">${s.title}</div><p class="lead" style="margin:8px 0 0">${s.desc}</p>` + renderStats(s.stats);
-                        // Fade in
-                        requestAnimationFrame(()=>{
-                            img.style.opacity = '1';
-                            textContainer.style.opacity = '1';
-                        });
-                        img.onload = null;
-                    };
-                    // Swap the single image source
-                    img.src = s.src;
+                if(nextImage && nextImage.complete){
+                    setTimeout(finishSwap, FADE_MS);
+                    return;
+                }
 
-                    // Fallback: if image is cached and onload didn't fire, ensure content updates
-                    setTimeout(()=>{
-                        if(!loaded){
-                            textContainer.innerHTML = `<div style="font-weight:700">${s.title}</div><p class="lead" style="margin:8px 0 0">${s.desc}</p>` + renderStats(s.stats);
-                            img.style.opacity = '1';
-                            textContainer.style.opacity = '1';
-                        }
-                    }, 60);
-                }, FADE_MS);
+                const loader = new Image();
+                loader.onload = () => {
+                    if(token !== transitionToken) return;
+                    setTimeout(finishSwap, FADE_MS);
+                };
+                loader.src = s.src;
             }
 
             function renderDots(){
