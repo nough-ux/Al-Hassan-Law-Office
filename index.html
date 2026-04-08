@@ -105,6 +105,27 @@
         .stat{background:linear-gradient(180deg,rgba(19,30,46,0.98),rgba(11,18,29,0.98));padding:14px 12px;border-radius:16px;min-width:128px;text-align:center;border:none;box-shadow:0 12px 24px rgba(0,0,0,0.24);font-size:14px;line-height:1.6}
         .stat strong{display:block;font-size:17px;color:var(--gold)
         }
+        .hero-left .stats{
+            justify-content:center;
+            gap:10px;
+            width:100%;
+        }
+        .hero-left .stat{
+            min-width:0;
+            flex:1 1 140px;
+            max-width:calc(33.333% - 8px);
+            padding:14px 10px;
+        }
+        .hero-left .stat strong{
+            font-size:18px;
+            line-height:1.5;
+        }
+        .hero-left .stat .muted{
+            display:block;
+            margin-top:6px;
+            font-size:14px;
+            line-height:1.7;
+        }
         .hero-right{background:#111a27;padding:0;border-radius:0;border:none;display:flex;flex-direction:column;min-height:100%}
         .booking{display:flex;flex-direction:column;gap:10px}
         label{font-size:13px;color:var(--muted)}
@@ -416,10 +437,13 @@
             }
             .hero-left .stat{
                 min-width:calc(33.333% - 6px);
-                padding:10px 6px;
+                padding:11px 7px;
             }
             .hero-left .stat strong{
-                font-size:14px;
+                font-size:15px;
+            }
+            .hero-left .stat .muted{
+                font-size:13px;
             }
             #contact{
                 scroll-margin-top:24px;
@@ -523,18 +547,18 @@
             <div class="hero-left">
                 <h1>مكتب الحسَن — مكتب محاما رفيع المستوى بخبرة تفوق 10 سنوات</h1>
                 <p class="lead">تمثيل قانوني متميز للأفراد والشركات. أكثر من 2000+ عميل موثوق. قيادة قانونية ذات مكانة عالية والتزام دائم بتحديث المعرفة القانونية.</p>
-                <div class="stats">
+                <div class="stats hero-stats">
                     <div class="stat">
                         <strong>10+</strong>
-                        سنوات خبرة
+                        <span class="muted">سنوات خبرة</span>
                     </div>
                     <div class="stat">
                         <strong>2000+</strong>
-                        عميل خدموا
+                        <span class="muted">عميل خدموا</span>
                     </div>
                     <div class="stat">
-                        <strong>جميع المجالات القانونيه</strong>
-                        سمعة ومكانة
+                        <strong class="small-stat">جميع المجالات القانونيه</strong>
+                        <span class="muted">سمعة ومكانة</span>
                     </div>
                 </div>
                 <div style="margin-top:18px;display:flex;gap:12px">
@@ -665,14 +689,14 @@
                 </div>
                 <button type="button" class="ghost popup-close" onclick="hideContactForm()">×</button>
             </div>
-            <form id="contactForm" action="https://formspree.io/f/meepdean" method="POST" onsubmit="submitContact(event)" style="display:flex;flex-direction:column;gap:10px">
+            <form id="contactForm" action="https://formspree.io/f/meepdean" method="POST" novalidate onsubmit="submitContact(event)" style="display:flex;flex-direction:column;gap:10px">
                 <input type="hidden" name="_subject" value="رسالة جديدة من نموذج تواصل معنا">
                 <label>الاسم الكامل</label>
                 <input id="ct_name" name="الاسم الكامل" required placeholder="الاسم">
-                <label>البريد الإلكتروني</label>
+                <label>البريد الإلكتروني(هذا الحقل اختياري)</label>
                 <input id="ct_email" name="البريد الإلكتروني" type="email" placeholder="name@example.com">
                 <label>الهاتف</label>
-                <input id="ct_phone" name="الهاتف" required placeholder="01XXXXXXXXX">
+                <input id="ct_phone" name="الهاتف" type="tel" inputmode="numeric" maxlength="11" required placeholder="01XXXXXXXXX" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,11)">
                 <label>رسالتك</label>
                 <textarea id="ct_message" name="رسالتك" rows="5" required placeholder="تفاصيل الطلب أو القضية"></textarea>
                 <div style="margin-top:10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
@@ -717,7 +741,7 @@
 
             titleEl.textContent = title;
             messageEl.textContent = message;
-            badge.textContent = isError ? '!' : '✓';
+            badge.textContent = isError ? 'X' : '✓';
             card.classList.toggle('is-error', !!isError);
             popup.classList.add('is-visible');
             popup.setAttribute('aria-hidden', 'false');
@@ -733,7 +757,35 @@
             if(e && e.preventDefault) e.preventDefault();
             const form = document.getElementById('contactForm');
             const submitButton = form.querySelector('button[type="submit"]');
+            const nameInput = document.getElementById('ct_name');
+            const emailInput = document.getElementById('ct_email');
+            const phoneInput = document.getElementById('ct_phone');
+            const messageInput = document.getElementById('ct_message');
             const formData = new FormData(form);
+
+            if(!nameInput.value.trim()){
+                nameInput.focus();
+                showStatusPopup('الاسم الكامل مطلوب', 'يرجى إدخال الاسم الكامل.', true);
+                return;
+            }
+
+            if(emailInput.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())){
+                emailInput.focus();
+                showStatusPopup('البريد الإلكتروني غير صحيح', 'يرجى إدخال البريد الإلكتروني بالشكل الصحيح: name@example.com', true);
+                return;
+            }
+
+            if(!/^\d{11}$/.test(phoneInput.value.trim())){
+                phoneInput.focus();
+                showStatusPopup('رقم الهاتف غير مكتمل', 'يرجى إدخال رقم الهاتف بالشكل الصحيح: 01XXXXXXXXX', true);
+                return;
+            }
+
+            if(!messageInput.value.trim()){
+                messageInput.focus();
+                showStatusPopup('الرسالة مطلوبة', 'يرجى كتابة تفاصيل الطلب أو القضية.', true);
+                return;
+            }
 
             submitButton.disabled = true;
             submitButton.textContent = 'جاري الإرسال...';
