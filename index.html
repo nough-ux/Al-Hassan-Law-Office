@@ -1484,11 +1484,11 @@
                 <p class="lead">نمثل الأفراد والشركات في الملفات الحساسة بثقة مهنية، صياغة دقيقة، واستجابة واضحة من أول استشارة حتى آخر خطوة في الملف.</p>
                 <div class="stats hero-stats">
                     <div class="stat">
-                        <strong>10+</strong>
+                        <strong class="stat-count" data-target="10" data-suffix="+">0</strong>
                         <span class="muted">سنوات خبرة</span>
                     </div>
                     <div class="stat">
-                        <strong>2000+</strong>
+                        <strong class="stat-count" data-target="2000" data-suffix="+">0</strong>
                         <span class="muted">عميل خدموا</span>
                     </div>
                     <div class="stat">
@@ -1612,7 +1612,7 @@
                         <h4>ساعات العمل</h4>
                         <p class="muted">كل يوم من 12صباحًا — 12 مساءًا معدا يوم الخميس:مغلق</p>
                     </div>
-                    <button type="button" class="primary" onclick="openContactForm()">احصل على استشارة مجانية</button>
+                    <button type="button" class="primary" onclick="openContactForm()">احجز استشارة مجانا</button>
                 </div>
             </div>
         </section>
@@ -1657,8 +1657,8 @@
         <div class="contact-popup-card" role="dialog" aria-modal="true" aria-labelledby="contactPopupTitle">
             <div class="popup-header">
                 <div>
-                    <h3 id="contactPopupTitle">استشارة مجانية</h3>
-                    <p>املأ البيانات التالية وسيتم إرسال استشارتك إلى بريد المكتب الإلكتروني.</p>
+                    <h3 id="contactPopupTitle">حجز استشارة</h3>
+                    <p>املأ البيانات التالية وسيتم إرسال حجزاستشارتك إلى بريد المكتب الإلكتروني.</p>
                 </div>
                 <button type="button" class="ghost popup-close" onclick="hideContactForm()">×</button>
             </div>
@@ -1674,7 +1674,7 @@
                 <textarea id="ct_message" name="رسالتك" rows="5" required placeholder="تفاصيل الاستشارة أو القضية"></textarea>
                 <div style="margin-top:10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
                     <button type="submit" class="primary">إرسال الاستشارة</button>
-                    <span class="muted" style="font-size:13px">سيتم إرسال استشارتك مباشرة إلى بريد المكتب الإلكتروني.</span>
+                    <span class="muted" style="font-size:13px">سيتم إرسال حجز استشارتك مباشرة إلى بريد المكتب الإلكتروني.</span>
                 </div>
             </form>
         </div>
@@ -1890,6 +1890,44 @@
             targets.forEach(el => observer.observe(el));
         })();
 
+        // Counter animation for hero stats.
+        (function(){
+            const counters = Array.from(document.querySelectorAll('.stat-count'));
+            if(!counters.length) return;
+
+            function animateCounter(el){
+                const target = Number(el.dataset.target || 0);
+                const suffix = el.dataset.suffix || '';
+                const duration = 1400;
+                const startTime = performance.now();
+
+                function tick(now){
+                    const progress = Math.min((now - startTime) / duration, 1);
+                    const value = Math.round(progress * target);
+                    el.textContent = `${value}${suffix}`;
+                    if(progress < 1) requestAnimationFrame(tick);
+                }
+                requestAnimationFrame(tick);
+            }
+
+            if('IntersectionObserver' in window){
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if(entry.isIntersecting){
+                            const el = entry.target;
+                            if(el.dataset.animated) return;
+                            el.dataset.animated = 'true';
+                            animateCounter(el);
+                        }
+                    });
+                }, { threshold: 0.5 });
+
+                counters.forEach(el => observer.observe(el));
+            } else {
+                counters.forEach(animateCounter);
+            }
+        })();
+
         // Carousel: single <img>, auto-slide, arrows, dots, and text update
         (function(){
             const slides = [
@@ -1937,12 +1975,39 @@
             function renderStats(s){
                 return s.map(it => {
                     const small = (it.value === 'الاستئناف العالي / مجلس الدولة') ? ' class="small-stat"' : '';
+                    const numeric = /^\d+/.test(it.value);
+                    if(numeric){
+                        const target = parseInt(it.value, 10);
+                        return `<div class="mini-card"><strong class="stat-count"${small} data-target="${target}" data-suffix="+">0</strong><span class="muted" style="font-size:13px;margin-top:6px;display:block">${it.label}</span></div>`;
+                    }
                     return `<div class="mini-card"><strong${small}>${it.value}</strong><span class="muted" style="font-size:13px;margin-top:6px;display:block">${it.label}</span></div>`;
                 }).join('');
             }
 
             const FADE_MS = 350;
             let transitionToken = 0;
+
+            function animateCounter(el){
+                const target = Number(el.dataset.target || 0);
+                const suffix = el.dataset.suffix || '';
+                const duration = 1200;
+                const startTime = performance.now();
+
+                function tick(now){
+                    const progress = Math.min((now - startTime) / duration, 1);
+                    const value = Math.round(progress * target);
+                    el.textContent = `${value}${suffix}`;
+                    if(progress < 1) requestAnimationFrame(tick);
+                }
+                requestAnimationFrame(tick);
+            }
+
+            function animateCountersIn(root){
+                if(!root) return;
+                root.querySelectorAll('.stat-count').forEach(el => {
+                    animateCounter(el);
+                });
+            }
 
             function update(){
                 const slideIndex = idx;
@@ -1965,6 +2030,7 @@
                     titleContainer.textContent = s.title;
                     descContainer.textContent = s.desc;
                     statsContainer.innerHTML = renderStats(s.stats);
+                    animateCountersIn(statsContainer);
                     requestAnimationFrame(()=>{
                         if(token !== transitionToken) return;
                         img.style.opacity = '1';
@@ -2023,6 +2089,7 @@
             titleContainer.textContent = initial.title;
             descContainer.textContent = initial.desc;
             statsContainer.innerHTML = renderStats(initial.stats);
+            animateCountersIn(statsContainer);
             img.style.opacity = '1';
             titleContainer.style.opacity = '1';
             descContainer.style.opacity = '1';
